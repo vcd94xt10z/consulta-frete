@@ -22,8 +22,7 @@ Freight.loadConfig = function(){
 		var jsonData = null;
 		
 		try {
-			var jsonData = JSON.parse(fs.readFileSync(file, 'utf-8'));
-			Freight.config[carrier] = jsonData;
+			jsonData = JSON.parse(fs.readFileSync(file, 'utf-8'));
 			console.log(carrier+": OK");
 		}catch(e){
 			console.log(carrier+": Erro ("+e+")");
