@@ -1,0 +1,5 @@
+- URL amigável para consultar informações de estatistica
+- Favicon
+- Adicionar JadLog
+- Adicionar TotalExpress
+- Adicionar DirectLog
