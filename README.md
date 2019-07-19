@@ -38,6 +38,12 @@ node index.js
 - A primeira é consultando apenas uma url e recebendo todos os fretes de uma só vez. 
 - A segunda forma (recomendada) é consultar as transportadoras que atendem a solicitação e depois chamar a consulta de frete de cada transportadora individualmente. Assim, conforme cada consulta é finalizada, o usuário já recebe
 a informação, ao invés de esperar todas terminarem.
+
+Biblioteca frontend para facilitar o consumo do serviço
+
+```
+https://cdn.jsdelivr.net/gh/vcd94xt10z/consulta-frete/freight.js
+```
  
 ### Operações disponíveis
 
