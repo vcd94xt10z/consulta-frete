@@ -2,6 +2,9 @@
  * Autor Vinicius <dias.viniciuscesar@gmail.com>
  * Desde 10/12/2018 v0.1
  */
+const fs 		 = require('fs');
+const http       = require('http');
+const https      = require('https');
 const express    = require('express');
 const bodyParser = require('body-parser');
 
@@ -11,7 +14,20 @@ const correios   = require('./controller/Correios.class.js');
 const rodonaves  = require('./controller/Rodonaves.class.js');
 const utils      = require('./controller/Utils.class.js');
 
+// certificados SSL
+var options  = null;
+
+try {
+  options = {
+    ca: [fs.readFileSync('./cert/ca.crt'), fs.readFileSync('./cert/ca.pem')],
+    cert: fs.readFileSync('./cert/site.crt'),
+    key: fs.readFileSync('./cert/site.key')
+  };
+}catch(e){
+}
+
 const app = express();
+
 app.disable('x-powered-by');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -166,15 +182,21 @@ app.use(function(err, req, res, next) {
     res.status(500).send('Serviço indisponível');
 });
 
-// escutando porta
-app.listen(3000, function () {
-	console.log("");
-	console.log('NodeJS rodando na porta 3000');
-	console.log('Aguardando novos clientes');
-	console.log("");
-	console.log('URIs disponíveis:');
-	console.log('POST /frete/');
-	console.log('POST /info/');
-	console.log('POST /<transportadora>/');
-	console.log("");
+// disponibilizando tanto via http como https
+var httpServer = http.createServer(app);
+httpServer.listen(3000,function(){
+	console.log("Rodando na porta 3000 (http)");
 });
+
+if(options != null){
+	var httpsServer = https.createServer(options, app);
+	httpsServer.listen(3001,function(){
+		console.log("Rodando na porta 3001 (https)");
+	});
+}
+
+console.log('URIs disponíveis:');
+console.log('POST /frete/');
+console.log('POST /info/');
+console.log('POST /<transportadora>/');
+console.log("");
