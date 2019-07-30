@@ -9,6 +9,10 @@ const express    = require('express');
 const bodyParser = require('body-parser');
 
 const freight    = require('./controller/Freight.class.js');
+const alfa		 = require("./controller/Alfa.class.js");
+const andorinha	 = require("./controller/Andorinha.class.js");
+const atlas		 = require("./controller/Atlas.class.js");
+const atual		 = require("./controller/Atual.class.js");
 const tnt        = require('./controller/TNT.class.js');
 const correios   = require('./controller/Correios.class.js');
 const rodonaves  = require('./controller/Rodonaves.class.js');

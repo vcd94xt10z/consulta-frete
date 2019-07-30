@@ -6,7 +6,7 @@ const fs = require('fs');
  */
 var Freight = function(){};
 Freight.timeout = 2000;
-Freight.carrierList = ["rodonaves","tnt","correios"];
+Freight.carrierList = ["rodonaves","tnt","correios","alfa","andorinha","atlas","atual"];
 
 /**
  * Carrega as configurações das transportadoras
