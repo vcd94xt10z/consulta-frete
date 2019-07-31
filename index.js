@@ -14,6 +14,7 @@ const andorinha	 = require("./controller/Andorinha.class.js");
 const atlas		 = require("./controller/Atlas.class.js");
 const atual		 = require("./controller/Atual.class.js");
 const correios   = require('./controller/Correios.class.js');
+const ssw        = require('./controller/SSW.class.js');
 const utils      = require('./controller/Utils.class.js');
 
 var config       = null;
@@ -112,7 +113,12 @@ app.post('/frete/', function(req, res){
 		for(let i in payload.info.carrierList){
 			let carrier = payload.info.carrierList[i];
 			if(typeof carrier == "string"){
-				eval('promises.push('+carrier+".calc(payload));");	
+				let carrierConfig = Object.get(carrier);
+				if(carrierConfig.provider == "ssw"){
+					eval('promises.push(ssw.calc('+carrier+',payload));");
+				}else{
+					eval('promises.push('+carrier+'.calc(payload));');	
+				}	
 			}
 		}
 		
@@ -180,7 +186,13 @@ app.post('/frete/:carrierid', function(req, res){
 	
 	freight.getInfo(payload,function(){
 		payload.info.carrierList = [carrierid];
-		eval('var promise = '+carrierid+".calc(payload);");
+		
+		let carrierConfig = Object.get(carrierid);
+		if(carrierConfig.provider == "ssw"){
+			eval('var promise = ssw.calc('+carrierid+',payload);');
+		}else{
+			eval('var promise = '+carrierid+".calc(payload);");
+		}
 		
 		promise.then(function(result){
 			if(Object.get("debug") == 1){

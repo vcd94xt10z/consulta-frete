@@ -1,4 +1,7 @@
 {
+	"provider": "ssw",
+	"name": "ANDORINHA TRANSPORTES",
+	"timeout": 10000,
     "dominio": "ANE",
     "login": "moedordecarne",
     "senha": "moedordecarne",
