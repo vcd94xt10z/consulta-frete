@@ -11,7 +11,7 @@ var xmlParser = new xml2js.Parser();
  */
 var Correios = function(){};
 
-Correios.produtos = {
+Correios.modalidades = {
     40010: 'Sedex',
     40045: 'Sedex a cobrar',
     40215: 'Sedex 10',
@@ -41,8 +41,20 @@ Correios.calcPrecoPrazo = function(payload){
 		let produtosIds = [];
 		let config = Object.get("correios");
 		
-		for(let i in Correios.produtos){
-			produtosIds.push(i);
+		if(Array.isArray(config.modalidades) === false || 
+		   config.modalidades.length <= 0){
+			resolve({
+		    	"carrierid": "correios",
+		    	"status"   : "E",
+				"duration" : 0,
+				"message"  : "Nenhuma modalidade definida no arquivo de configuração!",
+		    	"result"   : []
+			});
+			return;
+		}
+		
+		for(let i in config.modalidades){
+			produtosIds.push(config.modalidades[i]);
 		}
 		
 		if(Object.get("debug") == 1){
@@ -105,37 +117,53 @@ Correios.calcPrecoPrazo = function(payload){
 					}
 					
 					//console.log(JSON.stringify(result, null, 2));
-					let servicos = result.cResultado.Servicos[0].cServico;
+					let servicos0 = result.cResultado.Servicos[0];
+					let mainStatus = 'E';
+					let mainMessage = "";
 					
-					for(let i = 0; i < servicos.length; i++){
-						var servico = servicos[i];
-						var answer = utils.getDefaultAnswer();
-						answer.carrierid = "correios";
-						answer.product.id = servico.Codigo[0];
-						answer.product.name = Correios.produtos[answer.product.id];
-						
-						//console.log(JSON.stringify(servico, null, 2));
-						var erro = servico.Erro[0];
-						var msgErro = servico.MsgErro[0];
-						
-						if(erro != "" && erro != "0"){
-							answer.errorCode = erro;
-							answer.message = msgErro;
-							answerList.push(answer);
-							continue;
+					try {
+						// a chamada deu sucesso mas não retornou nenhuma informação
+						if(servicos0 === ""){
+							mainStatus  = "S"; 
+							mainMessage = "Nenhuma informação retornada";
+						}else{
+							let servicos = servicos0.cServico;
+							
+							for(let i = 0; i < servicos.length; i++){
+								var servico = servicos[i];
+								var answer = utils.getDefaultAnswer();
+								answer.carrierid = "correios";
+								answer.product.id = servico.Codigo[0];
+								answer.product.name = Correios.modalidades[answer.product.id];
+								
+								//console.log(JSON.stringify(servico, null, 2));
+								var erro = servico.Erro[0];
+								var msgErro = servico.MsgErro[0];
+								
+								if(erro != "" && erro != "0"){
+									answer.errorCode = erro;
+									answer.message = msgErro;
+									answerList.push(answer);
+									continue;
+								}
+								
+								answer.price = utils.parseCurrency(servico.Valor[0]);
+								answer.deliveryDays = parseInt(servico.PrazoEntrega[0]);
+								answer.status = 'S';
+								answerList.push(answer);
+								mainStatus = 'S';
+							}
 						}
-						
-						answer.price = utils.parseCurrency(servico.Valor[0]);
-						answer.deliveryDays = parseInt(servico.PrazoEntrega[0]);
-						answer.status = 'S';
-						answerList.push(answer);
+					}catch(e){
+						mainStatus  = "E"; 
+						mainMessage = 'Erro em processar informação';
 					}
 					
 					resolve({
 						"carrierid": "correios",
-						"status"   : "S",
+						"status"   : mainStatus,
 						"duration" : diff,
-						"message"  : "",
+						"message"  : mainMessage,
 						"result"   : answerList
 					});
 				});

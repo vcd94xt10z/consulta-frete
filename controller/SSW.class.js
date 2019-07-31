@@ -139,4 +139,4 @@ SSW.calc = (carrierid, payload) => {
     });
 }
 
-module.exports = Andorinha;
+module.exports = SSW;

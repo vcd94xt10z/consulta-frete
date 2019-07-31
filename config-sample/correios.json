@@ -3,5 +3,6 @@
 	"sDsSenha": "123456",
 	"sCepOrigem": "86000000",
 	"sCdMaoPropria": "N",
-	"sCdAvisoRecebimento": "N"
+	"sCdAvisoRecebimento": "N",
+	"modalidades": [40010,40215,40290,41106]
 }

@@ -9,12 +9,10 @@ const express    = require('express');
 const bodyParser = require('body-parser');
 
 const freight    = require('./controller/Freight.class.js');
-const alfa		 = require("./controller/Alfa.class.js");
-const andorinha	 = require("./controller/Andorinha.class.js");
-const atlas		 = require("./controller/Atlas.class.js");
-const atual		 = require("./controller/Atual.class.js");
 const correios   = require('./controller/Correios.class.js');
 const ssw        = require('./controller/SSW.class.js');
+const alfa		 = require("./controller/Alfa.class.js");
+const atlas		 = require("./controller/Atlas.class.js");
 const utils      = require('./controller/Utils.class.js');
 
 var config       = null;
@@ -114,11 +112,16 @@ app.post('/frete/', function(req, res){
 			let carrier = payload.info.carrierList[i];
 			if(typeof carrier == "string"){
 				let carrierConfig = Object.get(carrier);
-				if(carrierConfig.provider == "ssw"){
-					eval('promises.push(ssw.calc('+carrier+',payload));");
-				}else{
-					eval('promises.push('+carrier+'.calc(payload));');	
-				}	
+				
+				try {
+					if(carrierConfig != null && carrierConfig.provider == "ssw"){
+						eval('promises.push(ssw.calc('+carrier+',payload));');
+					}else{
+						eval('promises.push('+carrier+'.calc(payload));');	
+					}
+				}catch(e){
+					console.log("Erro em chamar "+carrier+".calc(): "+e);
+				}
 			}
 		}
 		
@@ -188,19 +191,26 @@ app.post('/frete/:carrierid', function(req, res){
 		payload.info.carrierList = [carrierid];
 		
 		let carrierConfig = Object.get(carrierid);
-		if(carrierConfig.provider == "ssw"){
-			eval('var promise = ssw.calc('+carrierid+',payload);');
-		}else{
-			eval('var promise = '+carrierid+".calc(payload);");
-		}
 		
-		promise.then(function(result){
-			if(Object.get("debug") == 1){
-				console.log("Promise: done");
+		try {
+			var promise = null;
+			if(carrierConfig != null && carrierConfig.provider == "ssw"){
+				eval('promise = ssw.calc('+carrierid+',payload);');
+			}else{
+				eval('promise = '+carrierid+".calc(payload);");
 			}
-			payload.info.result.push(result);
-			payload.res.send(payload.info);
-		});
+			
+			promise.then(function(result){
+				if(Object.get("debug") == 1){
+					console.log("Promise: done");
+				}
+				payload.info.result.push(result);
+				payload.res.send(payload.info);
+			});
+		}catch(e){
+			console.log("Erro em chamar "+carrier+".calc(): "+e);
+			payload.res.status(500).send("Erro na consulta");
+		}
 	});
 });
 

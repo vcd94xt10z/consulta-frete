@@ -7,11 +7,10 @@
 Consulta de frete assíncrono com várias transportadoras, ideal para uso em sua plataforma de ecommerce.
 
 ### Transportadoras
-- :heavy_check_mark: Correios (Funcionando)
-- :heavy_check_mark: Alfa (Funcionando)
-- :heavy_check_mark: Andorinha (Funcionando)
-- :heavy_check_mark: Atlas (Funcionando)
-- :heavy_check_mark: Atual (Funcionando)
+- :heavy_check_mark: Correios
+- :heavy_check_mark: Transportadoras que utilizam o site SSW
+- :heavy_check_mark: Alfa
+- :heavy_check_mark: Atlas
 - :x: JadLog (Em desenvolvimento)
 
 ### Instruções
@@ -26,8 +25,8 @@ npm install fs express http https xml2js soap moment
 
 3) Copie o arquivo de configuração geral config-sample.json para config.json e faça as modificações
 
-4) Copie o arquivo de configuração de exemplo de cada transportadora no diretório /public/config-sample/ para o diretório
-/public/config/ e forneça as informações necessárias
+4) Copie o arquivo de configuração de exemplo de cada transportadora no diretório "config-sample" para o diretório
+"config" e forneça as informações necessárias
 
 5) Ative o SSL (opcional): Para ativar o suporte a SSL, crie o diretório "cert" na raiz do projeto com os arquivos ca.crt, ca.pem, site.crt e site.key. Se todos os arquivos forem válidos, o serviço vai subir automaticamente.
 
@@ -50,6 +49,8 @@ https://cdn.jsdelivr.net/gh/vcd94xt10z/consulta-frete/freight.js
 ```
  
 ### Operações disponíveis
+
+Os parâmetros podem variar dependendo da transportadora, não esqueça de verificar os erros retornados.
 
 Calcula o frete das transportadoras disponíveis (o acesso ao WebService de cada transportadora é feito de forma assíncrona)
 
@@ -98,3 +99,7 @@ POST /frete/correios
 	"diameter": 10	
 }
 ```
+
+## Transportadoras via site SSW
+
+Acesse o site https://ssw.inf.br e veja a lista de transportadoras disponíveis. Cada transportadora deve ter seu arquivo de configuração próprio e deve ser habilitada no arquivo config.json.
