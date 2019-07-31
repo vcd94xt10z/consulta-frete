@@ -13,10 +13,25 @@ const alfa		 = require("./controller/Alfa.class.js");
 const andorinha	 = require("./controller/Andorinha.class.js");
 const atlas		 = require("./controller/Atlas.class.js");
 const atual		 = require("./controller/Atual.class.js");
-const tnt        = require('./controller/TNT.class.js');
 const correios   = require('./controller/Correios.class.js');
-const rodonaves  = require('./controller/Rodonaves.class.js');
 const utils      = require('./controller/Utils.class.js');
+
+var config       = null;
+
+// inicialização
+console.log("+---------------------------------------------------------------+");
+console.log("| Consulta Frete (https://github.com/vcd94xt10z/consulta-frete) |");
+console.log("+---------------------------------------------------------------+");
+
+// arquivo de configuração
+try {
+	console.log("Carregando configuração geral");
+	config = JSON.parse(fs.readFileSync('./config.json','utf8'));
+}catch(e){
+	console.log("Erro em carregar configuração, crie o arquivo config.json e tente novamente");
+	process.exit(0);
+	return;
+}
 
 // certificados SSL
 var options  = null;
@@ -60,10 +75,7 @@ Object.get = function(key){
 }
 
 Object.set("debug",1);
-
-console.log("+---------------------------------------------------------------+");
-console.log("| Consulta Frete (https://github.com/vcd94xt10z/consulta-frete) |");
-console.log("+---------------------------------------------------------------+");
+Object.set("config",config);
 
 freight.loadConfig();
 
@@ -188,16 +200,21 @@ app.use(function(err, req, res, next) {
 
 // disponibilizando tanto via http como https
 var httpServer = http.createServer(app);
-httpServer.listen(3000,function(){
-	console.log("Rodando na porta 3000 (http)");
+httpServer.listen(config.httpPort,function(){
+	console.log("Rodando na porta "+config.httpPort+" (http)");
 });
 
 if(options != null){
 	var httpsServer = https.createServer(options, app);
-	httpsServer.listen(3001,function(){
-		console.log("Rodando na porta 3001 (https)");
+	httpsServer.listen(config.httpsPort,function(){
+		console.log("Rodando na porta "+config.httpsPort+" (https)");
 	});
 }
+
+console.log("");
+console.log('Transportadoras disponíveis:');
+console.log(config.carrierList);
+console.log("");
 
 console.log('URIs disponíveis:');
 console.log('POST /frete/');

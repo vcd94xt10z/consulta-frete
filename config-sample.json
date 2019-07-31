@@ -1,0 +1,5 @@
+{
+	"httpPort": 80,
+	"httpsPort": 443,
+	"carrierList": ["alfa","andorinha","atlas","atual","correios"]
+}

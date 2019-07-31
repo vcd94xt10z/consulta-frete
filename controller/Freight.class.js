@@ -6,7 +6,6 @@ const fs = require('fs');
  */
 var Freight = function(){};
 Freight.timeout = 2000;
-Freight.carrierList = ["rodonaves","tnt","correios","alfa","andorinha","atlas","atual"];
 
 /**
  * Carrega as configurações das transportadoras
@@ -14,10 +13,11 @@ Freight.carrierList = ["rodonaves","tnt","correios","alfa","andorinha","atlas","
 Freight.loadConfig = function(){
 	let folder   = './config/';
 	
-	console.log("Carregando configurações");
+	console.log("Carregando configurações das transportadoras");
+	let config = Object.get("config");
 	
-	for(let i in Freight.carrierList){
-		var carrier = Freight.carrierList[i];
+	for(let i in config.carrierList){
+		var carrier = config.carrierList[i];
 		var file = folder+carrier+".json";
 		var jsonData = null;
 		
@@ -35,8 +35,10 @@ Freight.loadConfig = function(){
  * Retorna informações das transportadoras
  */
 Freight.getInfo = function(payload,callback){
+	let config = Object.get("config");
+	
 	let obj = {
-		'carrierList': Freight.carrierList,
+		'carrierList': config.carrierList,
 		'input': payload.input,
 		'result': []
 	};

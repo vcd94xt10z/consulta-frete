@@ -8,11 +8,11 @@ Consulta de frete assíncrono com várias transportadoras, ideal para uso em sua
 
 ### Transportadoras
 - :heavy_check_mark: Correios (Funcionando)
-- :x: TNT (Em desenvolvimento)
-- :x: Rodonaves (Em desenvolvimento)
+- :heavy_check_mark: Alfa (Funcionando)
+- :heavy_check_mark: Andorinha (Funcionando)
+- :heavy_check_mark: Atlas (Funcionando)
+- :heavy_check_mark: Atual (Funcionando)
 - :x: JadLog (Em desenvolvimento)
-- :x: TotalExpress (Em desenvolvimento)
-- :x: DirectLog (Em desenvolvimento)
 
 ### Instruções
 
@@ -21,19 +21,23 @@ Consulta de frete assíncrono com várias transportadoras, ideal para uso em sua
 2) Entre no diretório e execute o comando
  
 ```
-npm install fs express http https xml2js
+npm install fs express http https xml2js soap moment
 ```
 
-3) Copie o arquivo de configuração de exemplo de cada transportadora no diretório /public/sample/ para o diretório
-/public/config/ e forneça as informações necessárias da sua empresa
+3) Copie o arquivo de configuração geral config-sample.json para config.json e faça as modificações
 
-4) Inicie o app
+4) Copie o arquivo de configuração de exemplo de cada transportadora no diretório /public/config-sample/ para o diretório
+/public/config/ e forneça as informações necessárias
+
+5) Ative o SSL (opcional): Para ativar o suporte a SSL, crie o diretório "cert" na raiz do projeto com os arquivos ca.crt, ca.pem, site.crt e site.key. Se todos os arquivos forem válidos, o serviço vai subir automaticamente.
+
+6) Inicie o app
  
 ```
 node index.js
 ```
 
-5) Consuma o serviço conforme explicado abaixo. Para facilitar, copie o arquivo sample.html para um servidor web e execute para ver a consulta funcionando. Há basicamente duas formas de consumo do serviço:
+7) Consuma o serviço conforme explicado abaixo. Para facilitar, copie o arquivo sample.html para um servidor web e execute para ver a consulta funcionando. Há basicamente duas formas de consumo do serviço:
 
 - A primeira é consultando apenas uma url e recebendo todos os fretes de uma só vez. 
 - A segunda forma (recomendada) é consultar as transportadoras que atendem a solicitação e depois chamar a consulta de frete de cada transportadora individualmente. Assim, conforme cada consulta é finalizada, o usuário já recebe
@@ -79,10 +83,10 @@ POST /info/
 }
 ```
 
-Calcula o frete da transportadora TNT
+Calcula o frete da transportadora Correios
 
 ```
-POST /frete/tnt
+POST /frete/correios
  
 {
 	"zipcode": "04180112",
