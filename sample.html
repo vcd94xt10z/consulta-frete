@@ -128,6 +128,9 @@
 		let height = $("#height").val();
 		let length = $("#length").val();
 		let diameter = $("#diameter").val();
+		let docnr = $("#docnr").val();
+		let ie = $("#ie").val();
+		let uf = $("#uf").val();
 		
 		let input = {
 			"zipcode": zipcode,
@@ -136,7 +139,10 @@
 			"width": parseFloat(width),
 			"height": parseFloat(height),
 			"length": parseFloat(length),
-			"diameter": parseFloat(diameter)
+			"diameter": parseFloat(diameter),
+			"docnr": docnr,
+			"ie": ie,
+			"uf": uf
 		};
 		
 		return input;
@@ -165,6 +171,18 @@
 			<div class="col-4">
 				<h2>Parâmetros</h2>
 				<form>
+					<div class="form-group row">
+						<label for="docnr" class="col-12 col-form-label">CPF/CNPJ</label>
+						<div class="col-12">
+							<input id="docnr" name="docnr" type="text" class="form-control" value="08302214922"/>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="ie" class="col-12 col-form-label">Inscrição Estadual</label>
+						<div class="col-12">
+							<input id="ie" name="ie" type="text" class="form-control" value=""/>
+						</div>
+					</div>
 				  <div class="form-group row">
 					<label for="zipcode" class="col-12 col-form-label">
 						CEP
@@ -172,6 +190,12 @@
 					<div class="col-12">
 					  <input id="zipcode" name="zipcode" type="text" class="form-control" required="required" value="04180112">
 					</div>
+				  </div>
+				  <div class="form-group row">
+					  <label for="uf" class="col-12 col-form-label">UF</label>
+					  <div class="col-12">
+						  <input id="uf" name="uf" type="text" class="form-control" reuqired="required" value="PR"/>
+					  </div>
 				  </div>
 				  <div class="form-group row">
 					<label for="total" class="col-12 col-form-label">

@@ -30,6 +30,7 @@ Freight.calcSync = function(input){
 				resolve(data);
 			},
 			error: function(xhr){
+				console.log(xhr);
 				reject(xhr);
 			}
 		});
@@ -73,6 +74,7 @@ Freight.getInfo = function(input){
 				resolve(data);
 			},
 			error: function(xhr){
+				console.log(xhr);
 				resolve(xhr);
 			}
 		});

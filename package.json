@@ -877,11 +877,7 @@
       "resolved": "https://registry.npmjs.org/fresh/-/fresh-0.5.2.tgz",
       "version": "0.5.2"
     },
-    "fs": {
-      "integrity": "sha1-invTcYa23d84E/I4WLV+yq9eQdQ=",
-      "resolved": "https://registry.npmjs.org/fs/-/fs-0.0.1-security.tgz",
-      "version": "0.0.1-security"
-    },
+    "fs": "0.0.1-security",
     "fsevents": {
       "dependencies": {
         "abbrev": {
@@ -1460,11 +1456,7 @@
       "resolved": "https://registry.npmjs.org/has-values/-/has-values-1.0.0.tgz",
       "version": "1.0.0"
     },
-    "http": {
-      "integrity": "sha1-huYybSnF0Dnen6xYSkVon5KfT3I=",
-      "resolved": "https://registry.npmjs.org/http/-/http-0.0.0.tgz",
-      "version": "0.0.0"
-    },
+    "http": "0.0.0",
     "http-errors": {
       "integrity": "sha512-uUQBt3H/cSIVfch6i1EuPNy/YsRSOUBXTVfZ+yR7Zjez3qjBz6i9+i4zjNaoqcoFVI4lQJ5plg63TvGfRSDCRg==",
       "requires": {
@@ -1501,11 +1493,7 @@
       "resolved": "https://registry.npmjs.org/httpreq/-/httpreq-0.4.24.tgz",
       "version": "0.4.24"
     },
-    "https": {
-      "integrity": "sha1-PDfHrhqO65ZpBKKtHpdaGUt+06Q=",
-      "resolved": "https://registry.npmjs.org/https/-/https-1.0.0.tgz",
-      "version": "1.0.0"
-    },
+    "https": "^1.0.0",
     "iconv-lite": {
       "integrity": "sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==",
       "requires": {
@@ -1519,6 +1507,7 @@
       "resolved": "https://registry.npmjs.org/ignore-by-default/-/ignore-by-default-1.0.1.tgz",
       "version": "1.0.1"
     },
+    "import": "0.0.6",
     "import-lazy": {
       "integrity": "sha1-BWmOPUXIjo1+nZLLBYTnfwlvPkM=",
       "resolved": "https://registry.npmjs.org/import-lazy/-/import-lazy-2.1.0.tgz",
@@ -2304,6 +2293,7 @@
       "resolved": "https://registry.npmjs.org/request/-/request-2.88.0.tgz",
       "version": "2.88.0"
     },
+    "request-promise": "^4.2.4",
     "resolve-url": {
       "integrity": "sha1-LGN/53yJOv0qZj/iGqkIAGjiBSo=",
       "resolved": "https://registry.npmjs.org/resolve-url/-/resolve-url-0.2.1.tgz",

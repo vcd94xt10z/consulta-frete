@@ -9,10 +9,12 @@ const express    = require('express');
 const bodyParser = require('body-parser');
 
 const freight    = require('./controller/Freight.class.js');
-const correios   = require('./controller/Correios.class.js');
-const ssw        = require('./controller/SSW.class.js');
 const alfa		 = require("./controller/Alfa.class.js");
 const atlas		 = require("./controller/Atlas.class.js");
+const braspress	 = require("./controller/Braspress.class.js");
+const correios   = require('./controller/Correios.class.js');
+const plimor	 = require("./controller/Plimor.class.js");
+const ssw        = require('./controller/SSW.class.js');
 const utils      = require('./controller/Utils.class.js');
 
 var config       = null;
@@ -104,7 +106,7 @@ app.post('/frete/', function(req, res){
 	
 	if(Object.get("debug") == 1){
 		console.log("-----------------------------------");
-		console.log("["+requestsCounter+"] Inicio de chamadas assíncronas");
+		console.log(`[${requestsCounter}] Inicio de chamadas assíncronas`);
 	}
 	
 	freight.getInfo(payload,function(){
@@ -115,12 +117,12 @@ app.post('/frete/', function(req, res){
 				
 				try {
 					if(carrierConfig != null && carrierConfig.provider == "ssw"){
-						eval('promises.push(ssw.calc('+carrier+',payload));');
+						eval(`promises.push(ssw.calc("${carrier}",payload));`);
 					}else{
-						eval('promises.push('+carrier+'.calc(payload));');	
+						eval(`promises.push(${carrier}.calc(payload));`);
 					}
 				}catch(e){
-					console.log("Erro em chamar "+carrier+".calc(): "+e);
+					console.log(`Erro em chamar ${carrier}.calc(): ${e}`);
 				}
 			}
 		}
@@ -174,7 +176,7 @@ app.post('/frete/:carrierid', function(req, res){
 	
 	if(Object.get("debug") == 1){
 		console.log("-----------------------------------");
-		console.log("["+requestsCounter+"] Inicio de chamada para "+carrierid);
+		console.log(`[${requestsCounter}] Inicio de chamada para ${carrierid}`);
 	}
 	
 	// validações
@@ -195,9 +197,9 @@ app.post('/frete/:carrierid', function(req, res){
 		try {
 			var promise = null;
 			if(carrierConfig != null && carrierConfig.provider == "ssw"){
-				eval('promise = ssw.calc('+carrierid+',payload);');
+				eval(`var promise = ssw.calc("${carrierid}",payload);`);
 			}else{
-				eval('promise = '+carrierid+".calc(payload);");
+				eval(`var promise = ${carrierid}.calc(payload);`);
 			}
 			
 			promise.then(function(result){
@@ -208,7 +210,7 @@ app.post('/frete/:carrierid', function(req, res){
 				payload.res.send(payload.info);
 			});
 		}catch(e){
-			console.log("Erro em chamar "+carrier+".calc(): "+e);
+			console.log(`Erro em chamar ${carrier}.calc(): ${e}`);
 			payload.res.status(500).send("Erro na consulta");
 		}
 	});
@@ -223,13 +225,13 @@ app.use(function(err, req, res, next) {
 // disponibilizando tanto via http como https
 var httpServer = http.createServer(app);
 httpServer.listen(config.httpPort,function(){
-	console.log("Rodando na porta "+config.httpPort+" (http)");
+	console.log(`Rodando na porta ${config.httpPort} (http)`);
 });
 
 if(options != null){
 	var httpsServer = https.createServer(options, app);
 	httpsServer.listen(config.httpsPort,function(){
-		console.log("Rodando na porta "+config.httpsPort+" (https)");
+		console.log(`Rodando na porta ${config.httpsPort} (https)`);
 	});
 }
 

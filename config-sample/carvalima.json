@@ -1,0 +1,10 @@
+{
+	"provider": "ssw",
+	"name": "CARVALIMA",
+	"timeout": 10000,
+    "dominio": "OTC",
+    "login": "moedordecarne",
+    "senha": "moedordecarne",
+    "cepOrigem": "32847237",
+    "cnpjPagador": "2943743534764"
+}

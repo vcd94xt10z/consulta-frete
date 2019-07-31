@@ -7,11 +7,20 @@
 Consulta de frete assíncrono com várias transportadoras, ideal para uso em sua plataforma de ecommerce.
 
 ### Transportadoras
-- :heavy_check_mark: Correios
-- :heavy_check_mark: Transportadoras que utilizam o site SSW
 - :heavy_check_mark: Alfa
-- :heavy_check_mark: Atlas
+- :heavy_check_mark: Transportadoras que utilizam o site SSW
+- :heavy_check_mark: Atlas/Jundiaí
+- :heavy_check_mark: Braspress
+- :heavy_check_mark: Correios
 - :x: JadLog (Em desenvolvimento)
+- :x: Jamef (A desenvolver)
+- :heavy_check_mark: Plimor
+- :x: Rodonaves (Em desenvolvimento)
+- :x: São Miguel (A desenvolver)
+- :x: Sudoeste (A desenvolver)
+- :x: TNT (Em desenvolvimento)
+- :x: TransLovato (A desenvolver)
+- :x: Transpen (A desenvolver)
 
 ### Instruções
 
