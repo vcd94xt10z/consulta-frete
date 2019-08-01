@@ -59,8 +59,7 @@ https://cdn.jsdelivr.net/gh/vcd94xt10z/consulta-frete/freight.js
 
 ## Demonstração
 
-Para ver como funciona na prática, acesse a [demo](https://htmlpreview.github.io/?https://github.com/vcd94xt10z/consulta-frete/blob/master/sample.html) ou copie o arquivo sample.html
-para um servidor web e teste localmente.
+Para ver como funciona na prática, copie o arquivo sample.html para um servidor web e teste localmente.
  
 ## Operações disponíveis
 
