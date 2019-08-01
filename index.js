@@ -14,6 +14,7 @@ const atlas		 = require("./controller/Atlas.class.js");
 const braspress	 = require("./controller/Braspress.class.js");
 const correios   = require('./controller/Correios.class.js');
 const plimor	 = require("./controller/Plimor.class.js");
+const rodonaves	 = require("./controller/Rodonaves.class.js");
 const ssw        = require('./controller/SSW.class.js');
 const utils      = require('./controller/Utils.class.js');
 

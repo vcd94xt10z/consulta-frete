@@ -14,14 +14,132 @@ var xmlParser = new xml2js.Parser();
 var Rodonaves = function(){};
 
 Rodonaves.token = "";
+Rodonaves.customer = null;
 Rodonaves.carrierid = "rodonaves";
 
 Rodonaves.getToken = (config) => {
     return new Promise((resolve, reject) => {
         let params = {
-            
+            "auth_type": config.auth_type,
+            "grant_type": "password",
+            "username": config.username,
+            "password": config.password
         };
         let post = JSON.stringify(params);
+        let headers = {
+            "Content-Type":"application/json",
+            "Content-Length":post.length
+        };
+
+        let options = {
+            "host": "01wapi.rte.com.br",
+            "port": "443",
+            "path": "/token",
+            "method": "POST",
+            "headers": headers
+        };
+
+        let req = https.request(options,(resp) => {
+            let data = "";
+
+            resp.on("data",(chunk) => {
+                data += chunk;
+            });
+
+            resp.on("end",() => {
+                console.log("token: "+data);
+                console.log("token response: "+resp);
+                if (resp.statusCode != 200 && resp.statusCode != 204) {
+                    return reject(data);
+                } else {
+                    Rodonaves.token = data;
+                    resolve(data);
+                }
+            });
+        });
+        req.write(post);
+        req.end();
+    });
+}
+
+Rodonaves.getCustomer = (input) => {
+    return new Promise((resolve, reject) => {
+        // let url = `https://01wapi.rte.com.br/api/v1/busca-por-cep?zipCode=${input.zipcode}`;
+        let headers = {
+            "Content-Type": "application/json",
+            "Authorization":`Bearer ${Rodonaves.token}`
+        };
+
+        let options = {
+            "host": "01wapi.rte.com.br",
+            "port": "443",
+            "path": `/api/v1/busca-por-cep?zipCode=${input.zipcode}`,
+            "method": "GET",
+            "headers": headers
+        };
+
+        let req = https.request(options,(resp) => {
+            let data = "";
+
+            resp.on("data",(chunk) => {
+                data += chunk;
+            });
+
+            resp.on("end",() => {
+                console.log("getCustomer response: "+resp.statusCode);
+                let result = JSON.parse(data);
+                console.log("getCustomer: "+JSON.stringify(result));
+                if (resp.statusCode != 200 && resp.statusCode != 204) {
+                    return reject(result.Message);
+                } else {
+                    Rodonaves.customer = result;
+                    resolve(result);
+                }
+            });
+        });
+        req.end();
+    });
+}
+
+Rodonaves.getFreight = (params) => {
+    return new Promise((resolve, reject) => {
+        let url = `https://01wapi.rte.com.br/api/v1/gera-cotacao`;
+        let post = JSON.stringify(params);
+
+        let headers = {
+            "Content-Type":"application/json",
+            "Content-Length":post.length,
+            "Authorization":`Bearer ${Rodonaves.token}`
+        };
+
+        let options = {
+            "host": "01wapi.rte.com.br",
+            "port": "443",
+            "path": "/api/v1/gera-cotacao",
+            "method": "POST",
+            "headers": headers
+        };
+
+        let req = https.request(options,(resp) => {
+            let data = "";
+
+            resp.on("data",(chunk) => {
+                data += chunk;
+            });
+
+            resp.on("end",() => {
+                console.log("getFreight response: "+resp);
+                if (resp.statusCode != 200 && resp.statusCode != 204) {
+                    return reject(data);
+                } else {
+                    let result = JSON.parse(data);
+                    console.log("getFreight: "+JSON.stringify(result));
+                    resolve(result);
+                }
+            });
+        });
+        req.write(post);
+        req.end();
     });
 }
 
@@ -63,118 +181,22 @@ Rodonaves.calc = (payload) => {
         };
 
         let getToken = Rodonaves.getToken(config);
-        let getCustomer = Rodonaves.getCustomer();
-        let getFreight = Rodonaves.getFreight();
+        let getCustomer = Rodonaves.getCustomer(input);
+        let getFreight = Rodonaves.getFreight(params);
 
-        let post = JSON.stringify(params);
-        let options = {
-            "host": "ws1.plimor.com.br",
-            "path": "/Hayamax/v1/cotacao_hayamax",
-            "port": 80,
-            "method": "POST",
-            "headers": {
-                "Content-Type": "application/json",
-                "Content-Length": post.length
-            },
-        };
-        
-        // fazendo requisição
-        let req = https.request(options, (resp) => {
-            let data = '';
-            
-            resp.on('data', (chunk) => {
-                data += chunk;
+        getToken.then(() => {
+            getCustomer.then(() => {
+                getFreight.then((res,rej) => {
+                    resolve(res);
+                }).catch((err) => {
+                    console.log("getFreightError: "+err);
+                });
+            }).catch((err) => {
+                console.log("getCustomerError: "+err);
             });
-            
-            resp.on('end', () => {
-                if (resp.statusCode == 422) {
-                    resolve({
-                        "carrierid": carrierid,
-                        "status": "E",
-                        "duration": diff,
-                        "message": "Requisição improcessável",
-                        "result": answerList
-                    });
-                    return;
-                }
-                let result = JSON.parse(data);
-                // let result = data;
-                end = new Date();
-                diff = end - start;
-                
-                if (Object.get("debug") == 1) {
-                    console.log(`${carrierid}: fim`);
-                }
-
-                if (typeof(result.erro) != "undefined" && result.erro.length > 0) {
-                    resolve({
-                        "carrierid": carrierid,
-                        "status": "E",
-                        "duration": diff,
-                        "message": result.erro,
-                        "result": answerList
-                    });
-                    return;
-                }
-                
-                if (result.atende == true) {
-                    let answer = utils.getDefaultAnswer();
-                    answer.carrierid = carrierid;
-                    answer.product.id = "default";
-                    answer.product.name = "default";
-                    answer.price = result.preco;
-                    answer.deliveryDays = result.prazo_entrega;
-                    answer.status = "S";
-                    answerList.push(answer);
-                    
-                    resolve({
-                        "carrierid": carrierid,
-                        "status"   : "S",
-                        "duration" : diff,
-                        "message"  : "",
-                        "result"   : answerList
-                    });
-                    return;
-                } else {
-                    resolve({
-                        "carrierid": carrierid,
-                        "status": "E",
-                        "duration": diff,
-                        "message": "Cliente ou endereço não é atendido pela transportadora",
-                        "result": answerList
-                    });
-                    return;
-                }
-            });
-        }).on("error", (err) => {
-            if (Object.get("debug") == 1) {
-                console.log(`${carrierid}: error`);
-            }
-            
-            resolve({
-                "carrierid": carrierid,
-                "status"   : "E",
-                "duration" : diff,
-                "message"  : err.message,
-                "result"   : answerList
-            });
-        }).setTimeout(10000, function(){
-            end = new Date();
-            diff = end - start;
-            
-            this.abort();
-            
-            resolve({
-                "carrierid": "alfa",
-                "status"   : "E",
-                "duration" : diff,
-                "message"  : "timeout",
-                "result"   : answerList
-            });
+        }).catch((err) => {
+            console.log("getTokenError: "+err);
         });
-
-        req.write(post);
-        req.end();
     });
 }
 

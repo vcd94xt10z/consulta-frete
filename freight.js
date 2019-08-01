@@ -5,7 +5,7 @@
 var Freight = function(){};
 
 Freight.httpScheme = "http";
-Freight.servername = "henrique.hayamax2.com.br.des";
+Freight.servername = "localhost";
 Freight.port 	   = 3000;
 
 /**
