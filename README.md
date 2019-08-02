@@ -45,7 +45,7 @@ npm install fs express http https xml2js soap moment
 node index.js
 ```
 
-7) Consuma o serviço conforme explicado abaixo. Para facilitar, copie o arquivo sample.html para um servidor web e execute para ver a consulta funcionando. Há basicamente duas formas de consumo do serviço:
+7) Consuma o serviço conforme explicado abaixo. Para facilitar, acesse a demo para ver um exemplo de funcionamento. Há basicamente duas formas de consumo do serviço:
 
 - A primeira é consultando apenas uma url e recebendo todos os fretes de uma só vez. 
 - A segunda forma (recomendada) é consultar as transportadoras que atendem a solicitação e depois chamar a consulta de frete de cada transportadora individualmente. Assim, conforme cada consulta é finalizada, o usuário já recebe
@@ -59,7 +59,7 @@ https://cdn.jsdelivr.net/gh/vcd94xt10z/consulta-frete/freight.js
 
 ## Demonstração
 
-Para ver como funciona na prática, acesse nossa [demo](https://vcd94xt10z.github.io/projetos/consulta-frete/sample.html) ou copie o arquivo sample.html para um servidor web.
+Para ver como funciona na prática, acesse nossa [demo](https://vcd94xt10z.github.io/projetos/consulta-frete/sample.html), fique a vontade para baixar e modificar conforme sua necessidade.
  
 ## Operações disponíveis
 
