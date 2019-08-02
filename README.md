@@ -4,11 +4,10 @@
   <h1 align="center">Consulta de Frete</h1>
 </p>
 
-Consulta de frete assíncrono com várias transportadoras, ideal para uso em sua plataforma de ecommerce.
+Consulta de frete assíncrono com várias transportadoras, ideal para uso em seu site.
 
 ## Transportadoras
 - :heavy_check_mark: Alfa
-- :heavy_check_mark: Transportadoras que utilizam o site SSW
 - :heavy_check_mark: Atlas/Jundiaí
 - :heavy_check_mark: Braspress
 - :heavy_check_mark: Correios
@@ -21,6 +20,7 @@ Consulta de frete assíncrono com várias transportadoras, ideal para uso em sua
 - :x: TNT (Em desenvolvimento)
 - :x: TransLovato (A desenvolver)
 - :x: Transpen (A desenvolver)
+- :heavy_check_mark: Transportadoras que utilizam o site SSW
 
 ## Instruções
 
@@ -59,7 +59,7 @@ https://cdn.jsdelivr.net/gh/vcd94xt10z/consulta-frete/freight.js
 
 ## Demonstração
 
-Para ver como funciona na prática, clica aqui para ver uma [demo](https://vcd94xt10z.github.io/projetos/consulta-frete/sample.html) ou copie o arquivo sample.html para um servidor web.
+Para ver como funciona na prática, acesse nossa [demo](https://vcd94xt10z.github.io/projetos/consulta-frete/sample.html) ou copie o arquivo sample.html para um servidor web.
  
 ## Operações disponíveis
 
