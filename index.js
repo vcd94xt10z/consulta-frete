@@ -19,6 +19,8 @@ const ssw        = require('./controller/SSW.class.js');
 const utils      = require('./controller/Utils.class.js');
 
 var config       = null;
+var userList     = [];
+var requestsCounter = 0;
 
 // inicialização
 console.log("+---------------------------------------------------------------+");
@@ -33,6 +35,14 @@ try {
 	console.log("Erro em carregar configuração, crie o arquivo config.json e tente novamente");
 	process.exit(0);
 	return;
+}
+
+// arquivo de usuários
+try {
+	console.log("Carregando configuração de usuários");
+	userList = JSON.parse(fs.readFileSync('./user.json','utf8'));
+}catch(e){
+	console.log("Nenhum arquivo user.json encontrado");
 }
 
 // certificados SSL
@@ -53,7 +63,7 @@ app.disable('x-powered-by');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Origin", config.accessControlAllowOrigin);
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   
   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
@@ -85,10 +95,9 @@ Object.get2 = function(key1,key2){
 
 Object.set("debug",1);
 Object.set("config",config);
+Object.set("userList",userList);
 
 freight.loadConfig();
-
-var requestsCounter = 0;
 
 /**
  * Calcula o frete de todas as transportadoras disponíveis
@@ -121,7 +130,7 @@ app.post('/frete/', function(req, res){
 		for(let i in payload.info.carrierList){
 			let carrier = payload.info.carrierList[i];
 			if(typeof carrier == "string"){
-				let carrierConfig = Object.get(carrier);
+				let carrierConfig = Object.get2(payload.input.config,carrier);
 				
 				try {
 					if(carrierConfig != null && carrierConfig.provider == "ssw"){

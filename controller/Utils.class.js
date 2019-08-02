@@ -37,6 +37,29 @@ Utils.validateInput = function(req){
 		throw 'Entrada inválida';
 	}
 	
+	let config    = Object.get("config");
+	let userList  = Object.get("userList");
+	let userToken = req.header("x-token");
+	
+	if(config.tokenRequired){
+		if(userToken == undefined || userToken == ""){
+			throw 'Token vazio';
+		}
+		
+		let tokenOk = false;
+		for(let i in userList){
+			let user = userList[i];
+			if(user.token == userToken){
+				tokenOk = true;
+				break;
+			}
+		}
+		
+		if(!tokenOk){
+			throw 'Token inválido';
+		}
+	}
+	
 	for(let i in required){
 		let property = required[i];
 		if(!input[property]){
