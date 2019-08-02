@@ -1,0 +1,10 @@
+{
+	"provider": "ssw",
+	"name": "TRANSPEN",
+	"timeout": 10000,
+    "dominio": "TPC",
+    "login": "moedordecarne",
+    "senha": "moedordecarne",
+    "cepOrigem": "32984723",
+    "cnpjPagador": "92348723487233"
+}

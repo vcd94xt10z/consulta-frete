@@ -1,6 +1,8 @@
 const xml2js = require("xml2js");
 const utils  = require("./Utils.class.js");
+const http   = require("http");
 const https  = require("https");
+const request = require("request");
 const moment = require("moment");
 const fs     = require("fs");
 
@@ -25,10 +27,16 @@ Rodonaves.getToken = (config) => {
             "username": config.username,
             "password": config.password
         };
-        let post = JSON.stringify(params);
+
+        let post = "";
+        for (let key in params) {
+            let param = params[key];
+            post += `${key}=${param}&`;
+        }
+
         let headers = {
             "Content-Type":"application/json",
-            "Content-Length":post.length
+            "Content-Length":Buffer.byteLength(post)
         };
 
         let options = {
@@ -47,27 +55,31 @@ Rodonaves.getToken = (config) => {
             });
 
             resp.on("end",() => {
-                console.log("token: "+data);
-                console.log("token response: "+resp);
+                let result = JSON.parse(data);
                 if (resp.statusCode != 200 && resp.statusCode != 204) {
-                    return reject(data);
+                    resolve({
+                        "status": "E",
+                        "message": result.error
+                    });
                 } else {
-                    Rodonaves.token = data;
-                    resolve(data);
+                    resolve({
+                        "status": "S",
+                        "result": result
+                    });
                 }
             });
         });
-        req.write(post);
+        let wrote = req.write(post);
         req.end();
     });
 }
 
-Rodonaves.getCustomer = (input) => {
+Rodonaves.getCustomer = (input, token) => {
     return new Promise((resolve, reject) => {
         // let url = `https://01wapi.rte.com.br/api/v1/busca-por-cep?zipCode=${input.zipcode}`;
         let headers = {
             "Content-Type": "application/json",
-            "Authorization":`Bearer ${Rodonaves.token}`
+            "Authorization":`Bearer ${token}`
         };
 
         let options = {
@@ -86,14 +98,18 @@ Rodonaves.getCustomer = (input) => {
             });
 
             resp.on("end",() => {
-                console.log("getCustomer response: "+resp.statusCode);
                 let result = JSON.parse(data);
-                console.log("getCustomer: "+JSON.stringify(result));
+                
                 if (resp.statusCode != 200 && resp.statusCode != 204) {
-                    return reject(result.Message);
+                    resolve({
+                        "status": "E",
+                        "message": result[0].Message
+                    });
                 } else {
-                    Rodonaves.customer = result;
-                    resolve(result);
+                    resolve({
+                        "status": "S",
+                        "result": result
+                    });
                 }
             });
         });
@@ -101,15 +117,14 @@ Rodonaves.getCustomer = (input) => {
     });
 }
 
-Rodonaves.getFreight = (params) => {
+Rodonaves.getFreight = (params, token) => {
     return new Promise((resolve, reject) => {
-        let url = `https://01wapi.rte.com.br/api/v1/gera-cotacao`;
         let post = JSON.stringify(params);
 
         let headers = {
             "Content-Type":"application/json",
             "Content-Length":post.length,
-            "Authorization":`Bearer ${Rodonaves.token}`
+            "Authorization":`Bearer ${token}`
         };
 
         let options = {
@@ -128,13 +143,17 @@ Rodonaves.getFreight = (params) => {
             });
 
             resp.on("end",() => {
-                console.log("getFreight response: "+resp);
+                let result = JSON.parse(data);
                 if (resp.statusCode != 200 && resp.statusCode != 204) {
-                    return reject(data);
+                    resolve({
+                        "status": "E",
+                        "message": result[0].Message
+                    });
                 } else {
-                    let result = JSON.parse(data);
-                    console.log("getFreight: "+JSON.stringify(result));
-                    resolve(result);
+                    resolve({
+                        "status": "S",
+                        "result": result
+                    });
                 }
             });
         });
@@ -156,7 +175,7 @@ Rodonaves.calc = (payload) => {
         let diff = 0;
 
         let input = payload.input;
-        let config = Object.get(carrierid);
+        let config = Object.get2(input.config,carrierid);
 
         if (Object.get("debug")==1) {
             console.log(`${carrierid}: inicio`);
@@ -168,7 +187,7 @@ Rodonaves.calc = (payload) => {
             "DestinationZipcode": input.zipcode,
             "DestinationCityId": input.cityid,
             "TotalWeight": input.weight,
-            "ElectronicInvoiceValue": input.total,
+            "EletronicInvoiceValue": input.total,
             "CustomerTaxIdRegistration": config.CustomerTaxIdRegistration,
             "ReceiverCpfcnp": input.docnr,
             "Packs": [{
@@ -180,22 +199,70 @@ Rodonaves.calc = (payload) => {
             }]
         };
 
-        let getToken = Rodonaves.getToken(config);
-        let getCustomer = Rodonaves.getCustomer(input);
-        let getFreight = Rodonaves.getFreight(params);
+        Rodonaves.getToken(config).then((token) => {
+            if (token.status == "E") {
+                end = new Date();
+                diff = end - start;
 
-        getToken.then(() => {
-            getCustomer.then(() => {
-                getFreight.then((res,rej) => {
-                    resolve(res);
-                }).catch((err) => {
-                    console.log("getFreightError: "+err);
+                resolve({
+                    "carrierid": carrierid,
+                    "status"   : "E",
+                    "duration" : diff,
+                    "message"  : token.message,
+                    "result"   : answerList
                 });
-            }).catch((err) => {
-                console.log("getCustomerError: "+err);
+                return;
+            }
+
+            Rodonaves.getCustomer(input,token.result.access_token).then((customer) => {
+                if (customer.status == "E") {
+                    end = new Date();
+                    diff = end - start;
+
+                    resolve({
+                        "carrierid": carrierid,
+                        "status"   : "E",
+                        "duration" : diff,
+                        "message"  : customer.message,
+                        "result"   : answerList
+                    });
+                    return;
+                }
+                params.DestinationCityId = customer.result.CityId;
+
+                Rodonaves.getFreight(params, token.result.access_token).then((freight) => {
+                    end = new Date();
+                    diff = end - start;
+
+                    if (freight.status == "E") {
+                        resolve({
+                            "carrierid": carrierid,
+                            "status"   : "E",
+                            "duration" : diff,
+                            "message"  : freight.message,
+                            "result"   : answerList
+                        });
+                        return;
+                    } else {
+                        let answer = utils.getDefaultAnswer();
+                        answer.carrierid = carrierid;
+                        answer.product.id = "default";
+                        answer.product.name = "default";
+                        answer.price = freight.result.Value;
+                        answer.deliveryDays = freight.result.DeliveryTime;
+                        answer.status = "S";
+                        answerList.push(answer);
+                        
+                        resolve({
+                            "carrierid": carrierid,
+                            "status"   : "S",
+                            "duration" : diff,
+                            "message"  : "",
+                            "result"   : answerList
+                        });
+                    }
+                });
             });
-        }).catch((err) => {
-            console.log("getTokenError: "+err);
         });
     });
 }
