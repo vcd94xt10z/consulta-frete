@@ -13,9 +13,14 @@ const alfa		 = require("./controller/Alfa.class.js");
 const atlas		 = require("./controller/Atlas.class.js");
 const braspress	 = require("./controller/Braspress.class.js");
 const correios   = require('./controller/Correios.class.js');
+const jadlog	 = require("./controller/Jadlog.class.js");
+const jamef	 	 = require("./controller/Jamef.class.js");
 const plimor	 = require("./controller/Plimor.class.js");
 const rodonaves	 = require("./controller/Rodonaves.class.js");
+const saomiguel	 = require("./controller/SaoMiguel.class.js");
 const ssw        = require('./controller/SSW.class.js');
+const tnt		 = require("./controller/TNT.class.js");
+const translovato= require("./controller/TransLovato.class.js");
 const utils      = require('./controller/Utils.class.js');
 
 var config       = null;

@@ -2249,50 +2249,7 @@
       "resolved": "https://registry.npmjs.org/repeat-string/-/repeat-string-1.6.1.tgz",
       "version": "1.6.1"
     },
-    "request": {
-      "dependencies": {
-        "form-data": {
-          "integrity": "sha512-1lLKB2Mu3aGP1Q/2eCOx0fNbRMe7XdwktwOruhfqqd0rIJWwN4Dh+E3hrPSlDCXnSR7UtZ1N38rVXm+6+MEhJQ==",
-          "requires": {
-            "asynckit": "^0.4.0",
-            "combined-stream": "^1.0.6",
-            "mime-types": "^2.1.12"
-          },
-          "resolved": "https://registry.npmjs.org/form-data/-/form-data-2.3.3.tgz",
-          "version": "2.3.3"
-        },
-        "qs": {
-          "integrity": "sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==",
-          "resolved": "https://registry.npmjs.org/qs/-/qs-6.5.2.tgz",
-          "version": "6.5.2"
-        }
-      },
-      "integrity": "sha512-NAqBSrijGLZdM0WZNsInLJpkJokL72XYjUpnB0iwsRgxh7dB6COrHnTBNwN0E+lHDAJzu7kLAkDeY08z2/A0hg==",
-      "requires": {
-        "aws-sign2": "~0.7.0",
-        "aws4": "^1.8.0",
-        "caseless": "~0.12.0",
-        "combined-stream": "~1.0.6",
-        "extend": "~3.0.2",
-        "forever-agent": "~0.6.1",
-        "form-data": "~2.3.2",
-        "har-validator": "~5.1.0",
-        "http-signature": "~1.2.0",
-        "is-typedarray": "~1.0.0",
-        "isstream": "~0.1.2",
-        "json-stringify-safe": "~5.0.1",
-        "mime-types": "~2.1.19",
-        "oauth-sign": "~0.9.0",
-        "performance-now": "^2.1.0",
-        "qs": "~6.5.2",
-        "safe-buffer": "^5.1.2",
-        "tough-cookie": "~2.4.3",
-        "tunnel-agent": "^0.6.0",
-        "uuid": "^3.3.2"
-      },
-      "resolved": "https://registry.npmjs.org/request/-/request-2.88.0.tgz",
-      "version": "2.88.0"
-    },
+    "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "resolve-url": {
       "integrity": "sha1-LGN/53yJOv0qZj/iGqkIAGjiBSo=",

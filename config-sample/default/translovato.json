@@ -1,0 +1,13 @@
+{
+    "CNPJ": "2437732472374",
+    "Usuario": "moedordecarne",
+    "Senha": "moedordecarne",
+    "CdEmpresa": 5,
+    "CdRemetente": "2437732472374",
+    "NrCepColeta": "23737444",
+    "InTipoFrete": 1,
+    "InIcms": 0,
+    "CdNatureza": 1,
+    "CdTransporte": 1,
+    "CdTipoVeiculo": 0
+}
