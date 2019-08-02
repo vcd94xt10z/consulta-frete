@@ -35,7 +35,8 @@ npm install fs express http https xml2js soap moment
 3) Copie o arquivo de configuração geral config-sample.json para config.json e faça as modificações
 
 4) Copie o arquivo de configuração de exemplo de cada transportadora no diretório "config-sample" para o diretório
-"config" e forneça as informações necessárias
+"config" e forneça as informações necessárias. Dentro de "config" crie uma pasta "default" ou com outro nome para separar
+os arquivos de configuração, assim na chamada é necessário informar qual configuração deseja utilizar.
 
 5) Ative o SSL (opcional): Para ativar o suporte a SSL, crie o diretório "cert" na raiz do projeto com os arquivos ca.crt, ca.pem, site.crt e site.key. Se todos os arquivos forem válidos, o serviço vai subir automaticamente.
 
@@ -71,6 +72,7 @@ Calcula o frete das transportadoras disponíveis (o acesso ao WebService de cada
 POST /frete/
 
 {
+	"config": "default",
 	"zipcode": "04180112",
 	"total": 300.5,
 	"weight": 2,
@@ -87,6 +89,7 @@ Retorna as transportadoras que atendem o frete
 POST /info/
  
 {
+	"config": "default",
 	"zipcode": "04180112",
 	"total": 300.5,
 	"weight": 2,
@@ -103,6 +106,7 @@ Calcula o frete da transportadora Correios
 POST /frete/correios
  
 {
+	"config": "default",
 	"zipcode": "04180112",
 	"total": 300.5,
 	"weight": 2,

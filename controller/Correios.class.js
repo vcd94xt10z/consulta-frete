@@ -39,7 +39,7 @@ Correios.calcPrecoPrazo = function(payload){
 		
 		let input = payload.input;
 		let produtosIds = [];
-		let config = Object.get("correios");
+		let config = Object.get2(input.config,"correios");
 		
 		if(Array.isArray(config.modalidades) === false || 
 		   config.modalidades.length <= 0){

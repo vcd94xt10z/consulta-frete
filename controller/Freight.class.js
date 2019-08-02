@@ -11,23 +11,30 @@ Freight.timeout = 2000;
  * Carrega as configurações das transportadoras
  */
 Freight.loadConfig = function(){
-	let folder   = './config/';
+	let config = Object.get("config");
+	let folder = './config/';
 	
 	console.log("Carregando configurações das transportadoras");
-	let config = Object.get("config");
 	
-	for(let i in config.carrierList){
-		var carrier = config.carrierList[i];
-		var file = folder+carrier+".json";
-		var jsonData = null;
+	let folderList = fs.readdirSync(folder);
+	for(let i in folderList){
+		let subfolder = folderList[i];
+		let sublist   = [];
 		
-		try {
-			jsonData = JSON.parse(fs.readFileSync(file, 'utf-8'));
-			console.log(carrier+": OK");
-		}catch(e){
-			console.log(carrier+": Erro ("+e+")");
+		for(let j in config.carrierList){
+			var carrier = config.carrierList[j];
+			var file = folder+subfolder+"/"+carrier+".json";
+			var jsonData = null;
+			
+			try {
+				jsonData = JSON.parse(fs.readFileSync(file, 'utf-8'));
+				console.log(subfolder+" "+carrier+": OK");
+			}catch(e){
+				console.log(subfolder+" "+carrier+": Erro ("+e+")");
+			}
+			sublist[carrier] = jsonData;
 		}
-		Object.set(carrier,jsonData);
+		Object.set(subfolder,sublist);
 	}
 };
 

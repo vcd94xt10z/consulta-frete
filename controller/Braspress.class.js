@@ -51,8 +51,8 @@ Braspress.calc = (payload) => {
             });
             return;
         }
-
-        let config = Object.get(carrierid);
+        
+        let config = Object.get2(input.config,carrierid);
 
         if (Object.get("debug")==1) {
             console.log(`${carrierid}: inicio`);

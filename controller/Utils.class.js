@@ -31,7 +31,7 @@ Utils.validateInput = function(req){
 	}
 	
 	let input    = req.body;
-	let required = ["zipcode","weight","total","width","height","length","diameter"];
+	let required = ["config","zipcode","weight","total","width","height","length","diameter"];
 	
 	if(input == undefined){
 		throw 'Entrada inválida';

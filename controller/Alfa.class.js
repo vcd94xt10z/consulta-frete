@@ -23,7 +23,7 @@ Alfa.calc = (payload) => {
         let diff  = 0;
         
         let input = payload.input;
-        let config = Object.get("alfa");
+        let config = Object.get2(input.config,"alfa");
         
         let cliTip = 1;
         if (input.docnr.length == 11) {

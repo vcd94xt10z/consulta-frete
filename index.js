@@ -76,6 +76,13 @@ Object.get = function(key){
 	return Object.data[key];
 }
 
+Object.get2 = function(key1,key2){
+	let value1 = Object.data[key1];	
+	let value2 = null;
+	eval('value2 = value1.'+key2+';');
+	return value2;
+}
+
 Object.set("debug",1);
 Object.set("config",config);
 

@@ -24,7 +24,7 @@ SSW.calc = (carrierid, payload) => {
         let diff  = 0;
         
         let input = payload.input;
-        let config = Object.get(carrierid);
+        let config = Object.get2(input.config,carrierid);
         
         if (Object.get("debug") == 1) {
             console.log(`${carrierid}: inicio`);
