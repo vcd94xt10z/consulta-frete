@@ -58,6 +58,17 @@ Biblioteca frontend para facilitar o consumo do serviço
 https://cdn.jsdelivr.net/gh/vcd94xt10z/consulta-frete/freight.js
 ```
 
+## Multiplas configurações
+
+A API suporta multiplas configurações, ou seja, você pode ter uma pasta para cada empresa que contém todos os parâmetros das transportadoras como usuário, senha, CNPJ etc. Lembrando que sempre que uma requisição for feita, a configuração deve ser informada. Caso tenha apenas uma, recomendamos que utilize a pasta "default".
+
+## Segurança e Controle de Acesso
+
+Caso queira limitar o uso da API, você pode modificar as seguintes propriedades no arquivo "config.json"
+
+- accessControlAllowOrigin(string): Informe asterisco "*" para liberar o acesso para todos os sites, ou informe dos domínios. Para mais informações, clique [aqui](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Headers/Access-Control-Allow-Origin)
+- tokenRequired(boolean): Ative para solicitar token nas comunicações. O cadastro do token fica no arquivo "user.conf" e o token deve ser informado no cabeçalho de cada requisição, exemplo "x-token: 123456789"
+
 ## Demonstração
 
 Para ver como funciona na prática, acesse nossa [demo](https://vcd94xt10z.github.io/projetos/consulta-frete/sample.html), fique a vontade para baixar e modificar conforme sua necessidade.

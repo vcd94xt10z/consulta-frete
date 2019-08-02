@@ -1,4 +1,2 @@
-- Colocar controle de acesso a origem no arquivo de configuração
-- Colocar opção e restrição de controle de acesso no arquivo de configuração via token lendo o arquivo user.json
 - URL amigável para consultar informações de estatistica
 - Favicon
