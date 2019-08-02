@@ -59,7 +59,7 @@ https://cdn.jsdelivr.net/gh/vcd94xt10z/consulta-frete/freight.js
 
 ## Demonstração
 
-Para ver como funciona na prática, copie o arquivo sample.html para um servidor web e teste localmente.
+Para ver como funciona na prática, clica aqui para ver uma [demo](https://vcd94xt10z.github.io/projetos/consulta-frete/sample.html) ou copie o arquivo sample.html para um servidor web.
  
 ## Operações disponíveis
 
@@ -115,4 +115,4 @@ POST /frete/correios
 
 ## Transportadoras via site SSW
 
-Acesse o site https://ssw.inf.br e veja a lista de transportadoras disponíveis. Cada transportadora deve ter seu arquivo de configuração próprio e deve ser habilitada no arquivo config.json.
+Acesse o site https://ssw.inf.br e veja a lista de transportadoras disponíveis. Cada transportadora deve ter seu arquivo de configuração, além de ser habilitada no arquivo config.json
