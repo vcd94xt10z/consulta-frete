@@ -11,15 +11,15 @@ Consulta de frete assíncrono com várias transportadoras, ideal para uso em seu
 - :heavy_check_mark: Atlas/Jundiaí
 - :heavy_check_mark: Braspress
 - :heavy_check_mark: Correios
-- :heavy_check_mark: JadLog (Em desenvolvimento)
-- :heavy_check_mark: Jamef (A desenvolver)
+- :heavy_check_mark: JadLog
+- :heavy_check_mark: Jamef
 - :heavy_check_mark: Plimor
-- :heavy_check_mark: Rodonaves (Em desenvolvimento)
-- :heavy_check_mark: São Miguel (A desenvolver)
-- :heavy_check_mark: Sudoeste (A desenvolver)
-- :heavy_check_mark: TNT (Em desenvolvimento)
-- :heavy_check_mark: TransLovato (A desenvolver)
-- :heavy_check_mark: Transpen (A desenvolver)
+- :heavy_check_mark: Rodonaves
+- :heavy_check_mark: São Miguel
+- :heavy_check_mark: Sudoeste
+- :heavy_check_mark: TNT
+- :heavy_check_mark: TransLovato
+- :heavy_check_mark: Transpen
 - :heavy_check_mark: Transportadoras que utilizam o site SSW
 
 ## Instruções
