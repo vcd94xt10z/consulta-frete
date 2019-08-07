@@ -263,7 +263,7 @@ console.log(config.carrierList);
 console.log("");
 
 console.log('URIs disponíveis:');
-console.log('POST /frete/');
 console.log('POST /info/');
-console.log('POST /<transportadora>/');
+console.log('POST /frete/');
+console.log('POST /frete/<transportadora>/');
 console.log("");
