@@ -30,7 +30,6 @@ Freight.calcSync = function(input){
 				resolve(data);
 			},
 			error: function(xhr){
-				console.log(xhr);
 				reject(xhr);
 			}
 		});
@@ -40,11 +39,10 @@ Freight.calcSync = function(input){
 /**
  * Calcula o frete de forma asincrona
  */
-Freight.calcAll = function(input,renderCallback,finishCallback){
-	let promise  = Freight.getInfo(input);
+Freight.calcAll = function(input,renderCallback,finishCallback,errorCallback){
 	let promises = [];
 	
-	promise.then(function(data){
+	Freight.getInfo(input).then((data) => {
 		for(let i in data.carrierList){
 			let promiseItem = Freight.calcCarrier(input,data.carrierList[i]);
 			promiseItem.then(function(arg){
@@ -56,6 +54,10 @@ Freight.calcAll = function(input,renderCallback,finishCallback){
 		Promise.all(promises).then(function(){
 			finishCallback();
 		});
+	}).catch((err) => {
+		if (typeof(errorCallback)=="function") {
+			errorCallback(err);
+		}
 	});
 }
 
@@ -74,8 +76,7 @@ Freight.getInfo = function(input){
 				resolve(data);
 			},
 			error: function(xhr){
-				console.log(xhr);
-				resolve(xhr);
+				reject(xhr);
 			}
 		});
 	});
@@ -97,7 +98,7 @@ Freight.calcCarrier = function(input,carrierid){
 				resolve(carrierObj);
 			},
 			error: function(xhr){
-				resolve(xhr);
+				reject(xhr);
 			}
 		});
 	});

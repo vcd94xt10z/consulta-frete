@@ -122,8 +122,8 @@ Atlas.calc = (payload) => {
                     
                     let answer = utils.getDefaultAnswer();
                     answer.carrierid = carrierid;
-                    answer.product.id = null;
-                    answer.product.name = "ATLAS";
+                    answer.product.id = "default";
+                    answer.product.name = "default";
                     answer.price = cot.vlFrete;
                     answer.deliveryDays = days;
                     answer.status = "S";

@@ -119,7 +119,7 @@ SSW.calc = (carrierid, payload) => {
                     
                     let answer = utils.getDefaultAnswer();
                     answer.carrierid = carrierid;
-                    answer.product.id = null;
+                    answer.product.id = "default";
                     answer.product.name = config.name;
                     answer.price = cot.totalFrete[0];
                     answer.deliveryDays = cot.prazo[0];

@@ -149,6 +149,11 @@ TransLovato.calc = (payload) => {
                     
                     let result = data;
                     // xmlParser.parseString(data, (err, result) => {
+
+                    if (typeof(result)=="undefined") {
+                        err = "Resultado inválido";
+                    }
+
                     if (err) {
                         resolve({
                             "carrierid": carrierid,

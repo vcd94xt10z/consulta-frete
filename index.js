@@ -214,7 +214,7 @@ app.post('/frete/:carrierid', function(req, res){
 	freight.getInfo(payload,function(){
 		payload.info.carrierList = [carrierid];
 		
-		let carrierConfig = Object.get(carrierid);
+		let carrierConfig = Object.get2(payload.input.config,carrierid);
 		
 		try {
 			var promise = null;
