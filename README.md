@@ -77,11 +77,11 @@ Para ver como funciona na prática, acesse nossa [demo](https://vcd94xt10z.githu
 
 Os parâmetros podem variar dependendo da transportadora, não esqueça de verificar os erros retornados.
 
-Calcula o frete das transportadoras disponíveis (o acesso ao WebService de cada transportadora é feito de forma assíncrona)
+Retorna as transportadoras que atendem o frete
 
 ```
-POST /frete/
-
+POST /info/
+ 
 {
 	"config": "default",
 	"zipcode": "04180112",
@@ -94,11 +94,11 @@ POST /frete/
 }
 ```
 
-Retorna as transportadoras que atendem o frete
+Calcula o frete das transportadoras disponíveis (o acesso ao WebService de cada transportadora é feito de forma assíncrona)
 
 ```
-POST /info/
- 
+POST /frete/
+
 {
 	"config": "default",
 	"zipcode": "04180112",

@@ -3,5 +3,6 @@
 	"httpsPort": 443,
 	"accessControlAllowOrigin": "*",
 	"tokenRequired": false,
-	"carrierList": ["alfa","andorinha","atlas","atual","correios"]
+	"carrierList": ["alfa","atlas","braspress","correios","jadlog","jamef","plimor","rodonaves","saomiguel","tnt","translovato"],
+	"infoEndpoint": ""
 }
