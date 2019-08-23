@@ -92,10 +92,14 @@ Object.get = function(key){
 }
 
 Object.get2 = function(key1,key2){
-	let value1 = Object.data[key1];	
-	let value2 = null;
-	eval('value2 = value1.'+key2+';');
-	return value2;
+	try {
+		let value1 = Object.data[key1];	
+		let value2 = null;
+		eval('value2 = value1.'+key2+';');
+		return value2;
+	}catch(e){
+		return null;
+	}
 }
 
 Object.set("debug",1);
@@ -103,86 +107,6 @@ Object.set("config",config);
 Object.set("userList",userList);
 
 freight.loadConfig();
-
-/**
- * Calcula o frete de todas as transportadoras disponíveis
- * @param req
- * @param res
- * @returns
- */
-app.post('/frete/', function(req, res){
-	requestsCounter++;
-	
-	let payload  = {req:req,res:res,input:null};
-	let promises = [];
-	
-	// validações
-	try {
-		utils.validateInput(req);
-	}catch(message){
-		res.status(400).send(message);
-		return;
-	}
-	
-	payload.input = utils.parseInput(req);
-	
-	if(Object.get("debug") == 1){
-		console.log("-----------------------------------");
-		console.log(`[${requestsCounter}] Inicio de chamadas assíncronas`);
-	}
-	
-	freight.getInfo(payload,function(){
-		for(let i in payload.info.carrierList){
-			let carrier = payload.info.carrierList[i];
-			if(typeof carrier == "string"){
-				let carrierConfig = Object.get2(payload.input.config,carrier);
-				
-				try {
-					if(carrierConfig != null && carrierConfig.provider == "ssw"){
-						eval(`promises.push(ssw.calc("${carrier}",payload));`);
-					}else{
-						eval(`promises.push(${carrier}.calc(payload));`);
-					}
-				}catch(e){
-					console.log(`Erro em chamar ${carrier}.calc(): ${e}`);
-				}
-			}
-		}
-		
-		Promise.all(promises)
-		.then(function(resultArray){
-			if(Object.get("debug") == 1){
-				console.log("Promise.all: done");
-			}
-			payload.info.result = resultArray;
-			payload.res.send(payload.info);
-		});
-	});
-});
-
-/**
- * Retorna informações das transportadoras
- * @param req
- * @param res
- * @returns
- */
-app.post('/info/', function(req, res){
-	requestsCounter++;
-	
-	let payload = {req:req,res:res};
-	
-	// validações
-	try {
-		utils.validateInput(req);
-	}catch(message){
-		res.status(400).send(message);
-		return;
-	}
-	
-	freight.getInfo(payload,function(){
-		res.send(payload.info);
-	});
-});
 
 /**
  * Calcula o frete de uma transportadora
@@ -193,7 +117,12 @@ app.post('/info/', function(req, res){
 app.post('/frete/:carrierid', function(req, res){
 	requestsCounter++;
 	
-	let payload = {req:req,res:res};
+	let payload = {
+		req: req,
+		res: res,
+		input: null,
+		result: null
+	};
 	let carrierid = req.params.carrierid;
 	
 	if(Object.get("debug") == 1){
@@ -211,31 +140,27 @@ app.post('/frete/:carrierid', function(req, res){
 	
 	payload.input = utils.parseInput(req);
 	
-	freight.getInfo(payload,function(){
-		payload.info.carrierList = [carrierid];
+	let carrierConfig = Object.get2(payload.input.config,carrierid);
+	try {
+		var promise = null;
+		if(carrierConfig != null && carrierConfig.provider == "ssw"){
+			eval(`promise = ssw.calc("${carrierid}",payload);`);
+		}else{
+			eval(`promise = ${carrierid}.calc(payload);`);
+		}
 		
-		let carrierConfig = Object.get2(payload.input.config,carrierid);
-		
-		try {
-			var promise = null;
-			if(carrierConfig != null && carrierConfig.provider == "ssw"){
-				eval(`var promise = ssw.calc("${carrierid}",payload);`);
-			}else{
-				eval(`var promise = ${carrierid}.calc(payload);`);
+		promise.then(function(result){
+			if(Object.get("debug") == 1){
+				console.log("Promise: done");
 			}
 			
-			promise.then(function(result){
-				if(Object.get("debug") == 1){
-					console.log("Promise: done");
-				}
-				payload.info.result.push(result);
-				payload.res.send(payload.info);
-			});
-		}catch(e){
-			console.log(`Erro em chamar ${carrier}.calc(): ${e}`);
-			payload.res.status(500).send("Erro na consulta");
-		}
-	});
+			payload.result = result;
+			payload.res.send(payload.result);
+		});
+	}catch(e){
+		console.log(`Erro em chamar ${carrier}.calc(): ${e}`);
+		payload.res.status(500).send("Erro na consulta");
+	}
 });
 
 // manipulador de erros
@@ -262,8 +187,5 @@ console.log('Transportadoras disponíveis:');
 console.log(config.carrierList);
 console.log("");
 
-console.log('URIs disponíveis:');
-console.log('POST /info/');
-console.log('POST /frete/');
 console.log('POST /frete/<transportadora>/');
 console.log("");

@@ -18,20 +18,18 @@ Freight.getEndpoint = function(uri){
 /**
  * Calcula o frete de forma sincrona
  */
-Freight.calcSync = function(input){
+Freight.calcSync = function(input,carrierList){
 	return new Promise(function(resolve,reject){
-		$.ajax({
-			type: 'POST',
-			url: Freight.getEndpoint('/frete'),
-			contentType: 'application/json',
-			data: JSON.stringify(input),
-			dataType: 'json',
-			success: function(data){
-				resolve(data);
-			},
-			error: function(xhr){
-				reject(xhr);
-			}
+		let promises = [];
+		
+		for(let i in carrierList){
+			let carrierid = data.carrierList[i];
+			let promiseItem = Freight.calcCarrier(input,carrierid);
+			promises.push(promiseItem);
+		}
+		
+		Promise.all(promises).then(function(resultArray){
+			resolve(resultArray);
 		});
 	});
 }
@@ -39,46 +37,20 @@ Freight.calcSync = function(input){
 /**
  * Calcula o frete de forma asincrona
  */
-Freight.calcAll = function(input,renderCallback,finishCallback,errorCallback){
+Freight.calcAll = function(input,carrierList,renderCallback,finishCallback,errorCallback){
 	let promises = [];
 	
-	Freight.getInfo(input).then((data) => {
-		for(let i in data.carrierList){
-			let promiseItem = Freight.calcCarrier(input,data.carrierList[i]);
-			promiseItem.then(function(arg){
-				renderCallback(arg);
-			});
-			promises.push(promiseItem);
-		}
-		
-		Promise.all(promises).then(function(){
-			finishCallback();
+	for(let i in carrierList){
+		let carrierid = data.carrierList[i];
+		let promiseItem = Freight.calcCarrier(input,carrierid);
+		promiseItem.then(function(arg){
+			renderCallback(arg);
 		});
-	}).catch((err) => {
-		if (typeof(errorCallback)=="function") {
-			errorCallback(err);
-		}
-	});
-}
-
-/**
- * Retorna as transportadoras que atendem o frete
- */
-Freight.getInfo = function(input){
-	return new Promise(function(resolve,reject){
-		$.ajax({
-			type: 'POST',
-			url: Freight.getEndpoint('/info'),
-			contentType: 'application/json',
-			data: JSON.stringify(input),
-			dataType: 'json',
-			success: function(data){
-				resolve(data);
-			},
-			error: function(xhr){
-				reject(xhr);
-			}
-		});
+		promises.push(promiseItem);
+	}
+	
+	Promise.all(promises).then(function(){
+		finishCallback();
 	});
 }
 

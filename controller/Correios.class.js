@@ -40,6 +40,16 @@ Correios.calcPrecoPrazo = function(payload){
 		let input = payload.input;
 		let produtosIds = [];
 		let config = Object.get2(input.config,"correios");
+		if(config == null){
+			resolve({
+		    	"carrierid": "correios",
+		    	"status"   : "E",
+				"duration" : 0,
+				"message"  : "Nenhuma configuração '"+input.config+"' encontrada",
+		    	"result"   : []
+			});
+			return;
+		}
 		
 		if(Array.isArray(config.modalidades) === false || 
 		   config.modalidades.length <= 0){
