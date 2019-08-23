@@ -23,7 +23,7 @@ Freight.calcSync = function(input,carrierList){
 		let promises = [];
 		
 		for(let i in carrierList){
-			let carrierid = data.carrierList[i];
+			let carrierid = carrierList[i];
 			let promiseItem = Freight.calcCarrier(input,carrierid);
 			promises.push(promiseItem);
 		}
@@ -41,7 +41,7 @@ Freight.calcAll = function(input,carrierList,renderCallback,finishCallback,error
 	let promises = [];
 	
 	for(let i in carrierList){
-		let carrierid = data.carrierList[i];
+		let carrierid = carrierList[i];
 		let promiseItem = Freight.calcCarrier(input,carrierid);
 		promiseItem.then(function(arg){
 			renderCallback(arg);
@@ -66,8 +66,7 @@ Freight.calcCarrier = function(input,carrierid){
 			data: JSON.stringify(input),
 			dataType: 'json',
 			success: function(data){
-				var carrierObj = data.result[0];
-				resolve(carrierObj);
+				resolve(data);
 			},
 			error: function(xhr){
 				reject(xhr);
