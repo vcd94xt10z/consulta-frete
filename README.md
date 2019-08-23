@@ -1,9 +1,8 @@
-![Node](https://img.shields.io/badge/node-%3E%3D%208.0.0-brightgreen.svg)
-
-[![Github All Releases](https://img.shields.io/github/downloads/vcd94xt10z/consulta-frete/total.svg)]()
-
-![Hits](https://hitcounter.pythonanywhere.com/count/tag.svg?url=https%3A%2F%2Fgithub.com%2Fvcd94xt10z%2Fconsulta-frete)
-
+<p float="left">
+  <img src="https://img.shields.io/badge/node-%3E%3D%208.0.0-brightgreen.svg" />
+  <img src="https://img.shields.io/github/downloads/vcd94xt10z/consulta-frete/total.svg" /> 
+  <img src="https://hitcounter.pythonanywhere.com/count/tag.svg?url=https%3A%2F%2Fgithub.com%2Fvcd94xt10z%2Fconsulta-frete" />
+</p>
 <p align="center">
   <h1 align="center">Consulta de Frete</h1>
 </p>
