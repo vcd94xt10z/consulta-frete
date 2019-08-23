@@ -1,5 +1,7 @@
 ![Node](https://img.shields.io/badge/node-%3E%3D%208.0.0-brightgreen.svg)
 
+[![Github All Releases](https://img.shields.io/github/downloads/atom/atom/total.svg)]()
+
 <p align="center">
   <h1 align="center">Consulta de Frete</h1>
 </p>
@@ -77,23 +79,6 @@ Para ver como funciona na prática, acesse nossa [demo](https://vcd94xt10z.githu
 
 Os parâmetros podem variar dependendo da transportadora, não esqueça de verificar os erros retornados.
 
-Retorna as transportadoras que atendem o frete
-
-```
-POST /info/
- 
-{
-	"config": "default",
-	"zipcode": "04180112",
-	"total": 300.5,
-	"weight": 2,
-	"width": 14,
-	"height": 4,
-	"length": 18,
-	"diameter": 10	
-}
-```
-
 Calcula o frete das transportadoras disponíveis (o acesso ao WebService de cada transportadora é feito de forma assíncrona)
 
 ```
@@ -107,7 +92,8 @@ POST /frete/
 	"width": 14,
 	"height": 4,
 	"length": 18,
-	"diameter": 10	
+	"diameter": 10,
+	"carrierList": ["correios","jadlog"]
 }
 ```
 
@@ -124,7 +110,7 @@ POST /frete/correios
 	"width": 14,
 	"height": 4,
 	"length": 18,
-	"diameter": 10	
+	"diameter": 10
 }
 ```
 

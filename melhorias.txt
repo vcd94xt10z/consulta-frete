@@ -1,2 +1,5 @@
+- Criar uri /frete/ que chama internamente as transportadoras e retorna um só resultado, para 
+linguagens que não tem multi thread e para facilitar também
+- Atualizar também a documentação
 - URL amigável para consultar informações de estatistica
 - Favicon

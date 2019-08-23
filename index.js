@@ -102,11 +102,87 @@ Object.get2 = function(key1,key2){
 	}
 }
 
-Object.set("debug",1);
+Object.set("debug",0);
 Object.set("config",config);
 Object.set("userList",userList);
 
 freight.loadConfig();
+
+/**
+ * Calcula o frete de várias transportadoras ao mesmo tempo
+ * @param req
+ * @param res
+ * @returns
+ */
+app.post('/frete/', function(req, res){
+	requestsCounter++;
+	
+	let payload = {
+		req: req,
+		res: res,
+		input: null,
+		resultList: null
+	};
+	
+	if(Object.get("debug") == 1){
+		console.log("-----------------------------------");
+		console.log(`[${requestsCounter}] Inicio de chamada`);
+	}
+	
+	// validações
+	try {
+		utils.validateInput(req);
+	}catch(message){
+		res.status(400).send(message);
+		return;
+	}
+	
+	payload.input = utils.parseInput(req);
+	let carrierList = payload.input.carrierList;
+	
+	try {
+		if(!Array.isArray(carrierList)){
+			throw "Parâmetro obrigatório carrierList com a lista de transportadoras";
+		}
+		
+		let promises = [];
+		
+		for(var i in carrierList){
+			let carrierid     = carrierList[i];
+			let carrierConfig = Object.get2(payload.input.config,carrierid);
+			
+			if(carrierConfig == null){
+				continue;
+			}
+			
+			var promise = null;
+			if(carrierConfig != null && carrierConfig.provider == "ssw"){
+				eval(`promise = ssw.calc("${carrierid}",payload);`);
+			}else{
+				eval(`promise = ${carrierid}.calc(payload);`);
+			}
+			
+			promises.push(promise);
+		}
+		
+		if(promises.length <= 0){
+			res.status(400).send("Nenhuma transportadora válida encontrada pra calcular o frete");
+			return;
+		}
+		
+		Promise.all(promises).then(function(resultArray){
+			if(Object.get("debug") == 1){
+				console.log("Promise: done");
+			}
+			
+			payload.resultArray = resultArray;
+			payload.res.send(payload.resultArray);
+		});
+	}catch(e){
+		console.log(`Erro em consultar transportadoras: ${e}`);
+		payload.res.status(500).send("Erro em consultar transportadoras");
+	}
+});
 
 /**
  * Calcula o frete de uma transportadora
@@ -187,5 +263,7 @@ console.log('Transportadoras disponíveis:');
 console.log(config.carrierList);
 console.log("");
 
+console.log('URIs disponíveis');
+console.log('POST /frete/');
 console.log('POST /frete/<transportadora>/');
 console.log("");
