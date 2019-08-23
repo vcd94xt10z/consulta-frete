@@ -1,3 +1,5 @@
+[![Github Downloads (total)](https://img.shields.io/github/downloads/vcd94xt10z/consulta-frete/total.svg)]()
+
 <p float="left">
   <img src="https://img.shields.io/badge/node-%3E%3D%208.0.0-brightgreen.svg" />
   <img src="https://img.shields.io/github/downloads/vcd94xt10z/consulta-frete/total.svg" /> 
