@@ -161,7 +161,6 @@ app.post('/frete/', function(req, res){
 			}else{
 				eval(`promise = ${carrierid}.calc(payload);`);
 			}
-			
 			promises.push(promise);
 		}
 		

@@ -25,6 +25,18 @@ Alfa.calc = (payload) => {
         let input = payload.input;
         let config = Object.get2(input.config,"alfa");
         
+        // campos obrigatórios
+        if(input.docnr == undefined){
+        	resolve({
+                "carrierid": "alfa",
+                "status": "E",
+                "duration": diff,
+                "message": "Campo docnr é obrigatório",
+                "result": []
+            });
+            return;
+        }
+        
         let cliTip = 1;
         if (input.docnr.length == 11) {
             cliTip = 2;
