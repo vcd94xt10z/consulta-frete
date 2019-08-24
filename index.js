@@ -234,7 +234,7 @@ app.post('/frete/:carrierid', function(req, res){
 			payload.res.send(payload.result);
 		});
 	}catch(e){
-		console.log(`Erro em chamar ${carrier}.calc(): ${e}`);
+		console.log(`Erro em chamar ${carrierid}.calc(): ${e}`);
 		payload.res.status(500).send("Erro na consulta");
 	}
 });
