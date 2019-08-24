@@ -200,6 +200,7 @@ app.post('/frete/:carrierid', function(req, res){
 		result: null
 	};
 	let carrierid = req.params.carrierid;
+	let message   = "";
 	
 	if(Object.get("debug") == 1){
 		console.log("-----------------------------------");
@@ -218,6 +219,13 @@ app.post('/frete/:carrierid', function(req, res){
 	
 	let carrierConfig = Object.get2(payload.input.config,carrierid);
 	try {
+		if(carrierConfig == null){
+			message = `Nenhuma configuração encontrada para a transportadora ${carrierid} chave ${payload.input.config}`;
+			console.log(message);
+			payload.res.status(404).send(message);
+			return;
+		}
+		
 		var promise = null;
 		if(carrierConfig != null && carrierConfig.provider == "ssw"){
 			eval(`promise = ssw.calc("${carrierid}",payload);`);
@@ -232,10 +240,12 @@ app.post('/frete/:carrierid', function(req, res){
 			
 			payload.result = result;
 			payload.res.send(payload.result);
+			return;
 		});
 	}catch(e){
 		console.log(`Erro em chamar ${carrierid}.calc(): ${e}`);
-		payload.res.status(500).send("Erro na consulta");
+		payload.res.status(500).send(`Erro na consulta da transportadora ${carrierid}`);
+		return;
 	}
 });
 
